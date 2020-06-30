@@ -122,14 +122,16 @@ static void btn_cb_find_peers(void *data, Evas_Object *obj, void *event_info)
 	elm_genlist_item_selected_set(it, EINA_FALSE);
 
 	dlog_print(DLOG_DEBUG, LOG_TAG, "AGENT_INITIALISED");
-	find_peers();
+	//find_peers();
+	ft_find_peers();
 }
 
 static void btn_cb_send(void *data, Evas_Object *obj, void *event_info)
 {
 	Elm_Object_Item *it = event_info;
 	elm_genlist_item_selected_set(it, EINA_FALSE);
-	mex_send("Hello Message", 9, TRUE);
+	//mex_send("Hello Message", 9, TRUE);
+	ft_send_file();
 }
 
 

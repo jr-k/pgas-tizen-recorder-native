@@ -1,4 +1,4 @@
-#include <psap.h>
+#include "psap.h"
 
 
 struct priv {
@@ -6,9 +6,9 @@ struct priv {
 	sap_peer_agent_h peer_agent;
 };
 
+static struct priv priv_data = { 0 };
 void mex_message_delivery_status_cb(sap_peer_agent_h peer_agent_h, int transaction_id, sap_connectionless_transfer_status_e status, void *user_data);
 
-static struct priv priv_data = { 0 };
 
 void mex_message_delivery_status_cb(sap_peer_agent_h peer_agent_h, int transaction_id, sap_connectionless_transfer_status_e status, void *user_data)
 {
@@ -26,8 +26,7 @@ void mex_send(char *message, int length, gboolean is_secured)
 		return;
 	}
 
-	dlog_print(DLOG_DEBUG, LOG_TAG, "pa:%u, length :%d, message:%s", pa, length,
-		   message);
+	dlog_print(DLOG_DEBUG, LOG_TAG, "pa:%u, length :%d, message:%s", pa, length, message);
 
 	if (sap_peer_agent_is_feature_enabled(pa, SAP_FEATURE_MESSAGE)) {
 		result = sap_peer_agent_send_data(pa, (unsigned char *)message, length, is_secured, mex_message_delivery_status_cb, NULL);
@@ -41,7 +40,6 @@ void mex_send(char *message, int length, gboolean is_secured)
 		update_ui("Message feature is not supported by the Peer");
 		//Fallback to socket connection
 	}
-
 }
 
 void mex_data_received_cb(sap_peer_agent_h peer_agent,

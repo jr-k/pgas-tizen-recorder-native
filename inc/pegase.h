@@ -12,8 +12,10 @@
 #include <unistd.h>
 #include <privacy_privilege_manager.h>
 #include <pthread.h>
-#include "psap.h"
 #include <glib.h>
+
+#include "psap.h"
+#include "pft.h"
 
 #define FILENAME_PREFIX "AUDIO"
 
@@ -30,6 +32,6 @@ Ecore_Timer *timer2;
 
 #define RECORD_LIMIT 4.0
 #define NUMBER_OF_PRIVILEGES 3
-void     update_ui(char *data);
+void    update_ui(char *data);
 
 #endif /* __pegase_H__ */

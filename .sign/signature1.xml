@@ -4,18 +4,18 @@
 <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"></SignatureMethod>
 <Reference URI="author-signature.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
-<DigestValue>mV2+8dwPfxjoZCHqilsbI4DI8a8m8tMBMyUImJat0Bc/Y8lnISF0PQg2DGrJ6TtC5HxFRB7UEIjx
-GDY6kITVjw==</DigestValue>
+<DigestValue>uk8yLIFhR6+V8tvlrRZZKtB6w1hRfEzog+xxyZzmoiRounVXZhSpeCQZUEgWo1nQlRO73rhHLXtJ
+8GqrwsjcIg==</DigestValue>
 </Reference>
 <Reference URI="bin%2Fpegase">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
-<DigestValue>imS8ddQD+Ih0wjpmRv+kMtqVk8gbn0tJTt6ILhT5Cu1ipZfD3YHAZzjCROdeCvdq82UEqII29JSC
-UVNW8U6EjA==</DigestValue>
+<DigestValue>S6RdRBnrWazS4USYeRmQVrM9uh+A16iujKNnV3zVzIOcuXAgW2lqRnhlIuu/HGT+Ew3/JEKSUKlM
+6k7cRud0qg==</DigestValue>
 </Reference>
 <Reference URI="res%2Fxml%2Faccessoryservices.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
-<DigestValue>tyJbbjHWEWqrp5PMLS183301F3hJvz3syTOr8l7vwW/w27lavjCklzk/m9YnDB7r7HnTlZxJLiD8
-Q2dZLY0IOg==</DigestValue>
+<DigestValue>D4+DnRuEWHF7tm7T9hRN2kA1V0D6qetddGYg/JLtFcTQ7WoDQB20tX2ur/Ttv9tVx6K3KQAxMylJ
+0WmqsfFOPA==</DigestValue>
 </Reference>
 <Reference URI="shared%2Fres%2Fpegase.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
@@ -37,11 +37,11 @@ GyvKX9Snig==</DigestValue>
 </Reference>
 </SignedInfo>
 <SignatureValue>
-cuOA/RD9u7ZoxViufCS5AQSw1F/iFLrU7tlpJ7cMORsJmKopb89AKAiUHpvZjSq6j6Jd2wCXXiJS
-KmZon0Er+SjhaXTF2/Y5tFacsqd0MlCeTbaelE+cVp6vnyxwL/WyQ45shFtKY/iZeT750faHMHGb
-8QpSiI70jnaY31HdJdalqTshztFv2efRc2Cs8E1BD7VNxvkaLtIYXNYZdapJBhtYVCff80gsTzD3
-Ngc+p74kr5qytpaSSOenz8g9/Pr+rdgvr3uph/2lyqfCZiqT44cJzkOfSPNecJxD3Qd1EdP+HxwB
-i+GfCKUHA0M4H9VvAyy1xFx5qA3Qsnr+qv0h5w==
+CPhfboShV3Wp6TM6wRHqbOpE2oARERrB02cNJjaOWaAzdcqbE6d/05l0IPqNmovLbPdcuCxaM82Q
+ppEf8uPhKH9lMmqGIc+7uu8abfzai4xqWo7VclFw9TCIv24NFf8nk7ytnpn1C291cz/QrldrXBqa
+VrGOl3otQA4WPACMgpT4z9Rn+dVmwJzA8yU71QV4p7eleLHSZLA/ccY1+H3daQICvCVZb2c1QTJ1
+gmsoyHVefVQpY8pg6eedKS2y5bt/VKgJqiuJTNh9OgZpuxL0cnFRfqP9CJGVkcf7Vky/NUL1McU9
+bkT79o/nHw87IVz9CkQfZd2bAFtEfyW7YVtBqg==
 </SignatureValue>
 <KeyInfo>
 <X509Data>

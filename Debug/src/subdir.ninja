@@ -11,6 +11,11 @@ build src/pegase.o.ast: build_c_fast_ast ../src/pegase.c
 build $sareportdir/src/pegase.o.xml: build_c_fast_sa src/pegase.o.ast || externalFnMap.txt
 build src/pegase.o.txt: build_c_api ../src/pegase.c 
 build $coveragedir/src/pegase.o.cov: build_cov ../src/pegase.c 
+build src/pft.o: build_c ../src/pft.c 
+build src/pft.o.ast: build_c_fast_ast ../src/pft.c 
+build $sareportdir/src/pft.o.xml: build_c_fast_sa src/pft.o.ast || externalFnMap.txt
+build src/pft.o.txt: build_c_api ../src/pft.c 
+build $coveragedir/src/pft.o.cov: build_cov ../src/pft.c 
 build src/psap.o: build_c ../src/psap.c 
 build src/psap.o.ast: build_c_fast_ast ../src/psap.c 
 build $sareportdir/src/psap.o.xml: build_c_fast_sa src/psap.o.ast || externalFnMap.txt

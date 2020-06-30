@@ -4,13 +4,13 @@
 <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"></SignatureMethod>
 <Reference URI="bin%2Fpegase">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
-<DigestValue>imS8ddQD+Ih0wjpmRv+kMtqVk8gbn0tJTt6ILhT5Cu1ipZfD3YHAZzjCROdeCvdq82UEqII29JSC
-UVNW8U6EjA==</DigestValue>
+<DigestValue>S6RdRBnrWazS4USYeRmQVrM9uh+A16iujKNnV3zVzIOcuXAgW2lqRnhlIuu/HGT+Ew3/JEKSUKlM
+6k7cRud0qg==</DigestValue>
 </Reference>
 <Reference URI="res%2Fxml%2Faccessoryservices.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
-<DigestValue>tyJbbjHWEWqrp5PMLS183301F3hJvz3syTOr8l7vwW/w27lavjCklzk/m9YnDB7r7HnTlZxJLiD8
-Q2dZLY0IOg==</DigestValue>
+<DigestValue>D4+DnRuEWHF7tm7T9hRN2kA1V0D6qetddGYg/JLtFcTQ7WoDQB20tX2ur/Ttv9tVx6K3KQAxMylJ
+0WmqsfFOPA==</DigestValue>
 </Reference>
 <Reference URI="shared%2Fres%2Fpegase.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
@@ -32,11 +32,11 @@ QY10fG1EWQ==</DigestValue>
 </Reference>
 </SignedInfo>
 <SignatureValue>
-M7BiQrXUIe74nTjHOdkRsxiCbrRQcUzdJ4xkooX9VxSH3NBnWIhVzQpjOyUA0Ji4erT45aXEuZDs
-QRqvkDZ+HDK+oVnaHboxa7Oo9ne5V6rhbZ4B8a8yHPvrbAqrgsuT788Ir2ljJB6MagY9o3aU8+qf
-H/6mipC4jZRodaHdV8r23aq1hXDj0Mkq7pPU4mdUNuWQxfjHd46NKABgTyKpHPv2MtVfm3MWiGm7
-8PV8OBuYa+Vuv4D0FmPfY2EGH/+rMc342+ZzWgIQFrkIY+SudNniRaqU6X1hV4GuzgFiUqE19F9f
-sHnFdgjGijIyTDIdgWWwxJxI+z/0j9QRGXwNag==
+eZ+mNpK4q+2BmxKI2k9nz3WUJA7DpWvq9pi0aNzKNsNqPmMCeTwhCHgNehj4XPMytr3xbjkLBDb5
+iM6CCOx57PRgwflMJ5sL8Qt+Ioicdzb53we2xPKjJ766f8HQwE5qh7vfn9BFGlohuFtCjJwwL8DZ
+47UIL8+vrfKVD7HkXkMkEQ/8D+aDI8WBWi99Js+FBnlsf2z/WXHnDA+Yp5jW7ZOukHYxWyQ79T/X
+DjqB7O+3GCdaHcqjWvE0qEn/SlJTeXlkthwzjWF3GMMWu/cP75SqXpYRC3XrF3KFdTAmrV9Au+5Z
+GYOLSZqftj1R0cw69DUXd4UyXdbm9EIAnl+1fg==
 </SignatureValue>
 <KeyInfo>
 <X509Data>
