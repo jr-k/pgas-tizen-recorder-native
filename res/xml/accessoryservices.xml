@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<application name="org.tizen.hellomessageconsumer">
+		<serviceProfile id="/sample/hellomessage" name="HelloMessageConsumer" role="consumer" version="1.0">
+			<supportedTransports>
+				<transport type="TRANSPORT_BT" />
+			</supportedTransports>
+			<supportedFeatures>
+				<feature type="message" />
+			</supportedFeatures>
+		</serviceProfile>
+	</application>
+</resources>

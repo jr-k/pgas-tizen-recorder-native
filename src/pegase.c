@@ -5,7 +5,31 @@ typedef struct appdata {
 	Evas_Object *conform;
 	Evas_Object *label;
 	recorder_h g_recorder;
+	Evas_Object *naviframe;
+	Evas_Object *rect[10];
+	Eext_Circle_Surface *circle_surface;
+	Evas_Object *circle_genlist;
 } appdata_s;
+
+
+typedef struct _item_data {
+	int index;
+	Elm_Object_Item *item;
+} item_data;
+
+char *main_menu_names[] = {
+	"Find Peer", "Fetch",
+	NULL
+};
+
+
+bool permission_granted = false;
+int pgas_user_clicked = 0;
+
+void update_ui(char *data)
+{
+	dlog_print(DLOG_INFO, LOG_TAG, "Updating UI with data %s", data);
+}
 
 static void
 win_delete_request_cb(void *data, Evas_Object *obj, void *event_info)
@@ -47,6 +71,135 @@ _recorder_expect_state(recorder_h recorder, recorder_state_e expected_state)
     return false;
 }
 
+static char *_gl_title_text_get(void *data, Evas_Object *obj, const char *part)
+{
+	char buf[1024];
+
+	snprintf(buf, 1023, "%s", "HelloMessage");
+
+	return strdup(buf);
+}
+
+static char *_gl_sub_title_text_get(void *data, Evas_Object *obj, const char *part)
+{
+	char buf[1024];
+
+	snprintf(buf, 1023, "%s", "Consumer");
+
+	return strdup(buf);
+}
+
+static char *_gl_main_text_get(void *data, Evas_Object *obj, const char *part)
+{
+	char buf[1024];
+	item_data *id = data;
+	int index = id->index;
+
+	if (!strcmp(part, "elm.text"))
+		snprintf(buf, 1023, "%s", main_menu_names[index - 1]);
+
+	return strdup(buf);
+
+
+}
+static void _gl_del(void *data, Evas_Object *obj)
+{
+	// FIXME: Unrealized callback can be called after this.
+	// Accessing Item_Data can be dangerous on unrealized callback.
+	item_data *id = data;
+	if (id) free(id);
+}
+
+static Eina_Bool _naviframe_pop_cb(void *data, Elm_Object_Item *it)
+{
+	ui_app_exit();
+	return EINA_FALSE;
+}
+
+static void btn_cb_find_peers(void *data, Evas_Object *obj, void *event_info)
+{
+	Elm_Object_Item *it = event_info;
+	elm_genlist_item_selected_set(it, EINA_FALSE);
+
+	dlog_print(DLOG_DEBUG, LOG_TAG, "AGENT_INITIALISED");
+	find_peers();
+}
+
+static void btn_cb_send(void *data, Evas_Object *obj, void *event_info)
+{
+	Elm_Object_Item *it = event_info;
+	elm_genlist_item_selected_set(it, EINA_FALSE);
+	mex_send("Hello Message", 9, TRUE);
+}
+
+
+static void create_list_view(appdata_s *ad)
+{
+	Evas_Object *genlist = NULL;
+	Evas_Object *naviframe = ad->naviframe;
+	Elm_Object_Item *nf_it = NULL;
+	item_data *id = NULL;
+	int index = 0;
+
+	Elm_Genlist_Item_Class *itc = elm_genlist_item_class_new();
+	Elm_Genlist_Item_Class *titc = elm_genlist_item_class_new();
+	Elm_Genlist_Item_Class *pitc = elm_genlist_item_class_new();
+	Elm_Genlist_Item_Class *gic = elm_genlist_item_class_new();
+
+	/* Genlist Item Style */
+	itc->item_style = "1text";
+	itc->func.text_get = _gl_main_text_get;
+	itc->func.del = _gl_del;
+
+	/* Genlist Title Item Style */
+	titc->item_style = "title";
+	titc->func.text_get = _gl_title_text_get;
+	titc->func.del = _gl_del;
+
+	gic->item_style = "groupindex";
+	gic->func.text_get = _gl_sub_title_text_get;
+	gic->func.del = _gl_del;
+
+	pitc->item_style = "padding";
+
+	/* Create Genlist */
+	genlist = elm_genlist_add(naviframe);
+	elm_genlist_mode_set(genlist, ELM_LIST_COMPRESS);
+	evas_object_smart_callback_add(genlist, "selected", NULL, NULL);
+
+	/* Create Circle Genlist */
+	ad->circle_genlist = eext_circle_object_genlist_add(genlist, ad->circle_surface);
+
+	/* Set Scroller Policy */
+	eext_circle_object_genlist_scroller_policy_set(ad->circle_genlist, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_AUTO);
+
+	/* Activate Rotary Event */
+	eext_rotary_object_event_activated_set(ad->circle_genlist, EINA_TRUE);
+
+	/* Title Item Here */
+	id = calloc(sizeof(item_data), 1);
+	elm_genlist_item_append(genlist, titc, NULL, NULL, ELM_GENLIST_ITEM_GROUP, NULL, NULL);
+
+	id = calloc(sizeof(item_data), 1);
+	id->index = index++;
+	id->item = elm_genlist_item_append(genlist, gic, id, NULL, ELM_GENLIST_ITEM_GROUP, NULL, NULL);
+
+	/* Main Menu Items Here*/
+	id = calloc(sizeof(item_data), 1);
+	id->index = index++;
+	id->item = elm_genlist_item_append(genlist, itc, id, NULL, ELM_GENLIST_ITEM_NONE, btn_cb_find_peers, ad);
+	id = calloc(sizeof(item_data), 1);
+	id->index = index++;
+	id->item = elm_genlist_item_append(genlist, itc, id, NULL, ELM_GENLIST_ITEM_NONE, btn_cb_send, ad);
+
+	elm_genlist_item_append(genlist, pitc, NULL, NULL, ELM_GENLIST_ITEM_NONE, NULL, ad);
+
+	nf_it = elm_naviframe_item_push(naviframe, NULL, NULL, NULL, genlist, "empty");
+	elm_naviframe_item_pop_cb_set(nf_it, _naviframe_pop_cb, ad->win);
+
+
+}
+
 
 static void
 create_base_gui(appdata_s *ad)
@@ -84,6 +237,20 @@ create_base_gui(appdata_s *ad)
 
 	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	elm_object_content_set(ad->conform, ad->label);
+
+
+	/* Naviframe */
+	ad->naviframe = elm_naviframe_add(ad->conform);
+	elm_object_content_set(ad->conform, ad->naviframe);
+
+	/* Eext Circle Surface*/
+	ad->circle_surface = eext_circle_surface_naviframe_add(ad->naviframe);
+
+	/* Main View */
+	create_list_view(ad);
+
+	eext_object_event_callback_add(ad->naviframe, EEXT_CALLBACK_BACK, eext_naviframe_back_cb, NULL);
+	eext_object_event_callback_add(ad->naviframe, EEXT_CALLBACK_MORE, eext_naviframe_more_cb, NULL);
 
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);
@@ -175,7 +342,7 @@ _go_listen(appdata_s *ad) {
 
 	/* Set the maximum file size to 1024 (kB) */
 	//error_code = recorder_attr_set_size_limit(ad->g_recorder, 2048);
-	error_code = recorder_attr_set_time_limit(ad->g_recorder, RECORD_LIMIT * 2);
+	error_code = recorder_attr_set_time_limit(ad->g_recorder, RECORD_LIMIT + 1);
 
 	/* Set the audio encoder bitrate */
 	error_code = recorder_attr_set_audio_encoder_bitrate(ad->g_recorder, 16000);
@@ -237,6 +404,11 @@ app_create(void *data)
 
 	elm_object_text_set(ad->label, "<align=center>APP CREATE</align>");
 
+
+	dlog_print(DLOG_INFO, LOG_TAG, "SAP INIT");
+
+	initialize_sap();
+
 	return true;
 }
 
@@ -257,14 +429,13 @@ app_pause(void *data)
 static void permission_request_cb(ppm_call_cause_e cause, ppm_request_result_e result, const char *privilege, void *user_data)
 {
     dlog_print(DLOG_INFO, LOG_TAG, "callback called for privilege: %s with cause: %d, the result was: %d", privilege, cause, result);
-    user_clicked++;
+    pgas_user_clicked ++;
 }
 
-void *_waiting_for_privileges(appdata_s *ad)
-{
-    while (user_clicked < NUMBER_OF_PRIVILEGES)
+void *_waiting_for_privileges(appdata_s *ad) {
+    while (pgas_user_clicked  < NUMBER_OF_PRIVILEGES)
     {
-        dlog_print(DLOG_INFO, LOG_TAG, "waiting for user to accept all privileges, so far accepted: %d", user_clicked);
+        dlog_print(DLOG_INFO, LOG_TAG, "waiting for user to accept all privileges, so far accepted: %d", pgas_user_clicked );
 		elm_object_text_set(ad->label, "<align=center>PRIVI !</align>");
         sleep(1);
     }
@@ -281,6 +452,9 @@ app_resume(void *data)
 	dlog_print(DLOG_INFO, LOG_TAG, "app_resume");
 	
 	appdata_s *ad = data;
+
+
+	return;
 
 	ppm_check_result_e privilege_results_array[NUMBER_OF_PRIVILEGES];
 	const char *privilege_array[NUMBER_OF_PRIVILEGES];
@@ -381,6 +555,8 @@ ui_app_low_memory(app_event_info_h event_info, void *user_data)
 {
 	/*APP_EVENT_LOW_MEMORY*/
 }
+
+
 
 int
 main(int argc, char *argv[])
