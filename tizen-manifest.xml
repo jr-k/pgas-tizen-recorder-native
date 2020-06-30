@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="4.0" package="com.jrk.pegase.watch" version="1.0.0">
+    <profile name="wearable"/>
+    <ui-application appid="com.jrk.pegase.watch" exec="pegase" multiple="false" nodisplay="false" taskmanage="true" type="capp">
+        <label>pegase</label>
+        <icon>pegase.png</icon>
+    </ui-application>
+    <privileges>
+        <privilege>http://tizen.org/privilege/mediastorage</privilege>
+        <privilege>http://tizen.org/privilege/recorder</privilege>
+        <privilege>http://tizen.org/privilege/externalstorage</privilege>
+    </privileges>
+    <feature name="http://tizen.org/feature/microphone">true</feature>
+</manifest>

@@ -1,0 +1,5 @@
+set sysroot D:/sdk_languages/tizen/sdk/platforms/tizen-4.0/wearable/rootstraps/wearable-4.0-device.core
+set debug-file-directory D:/sdk_languages/tizen/sdk/platforms/tizen-4.0/wearable/rootstraps/wearable-4.0-device.core/usr/lib/debug
+set solib-search-path D:/workspaces/tizen/Pegase/Debug
+dir D:/sdk_languages/tizen/sdk/platforms/tizen-4.0/wearable/rootstraps/wearable-4.0-device.core/usr/src/debug
+sharedlibrary
