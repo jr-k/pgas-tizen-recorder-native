@@ -21,7 +21,6 @@ win_back_cb(void *data, Evas_Object *obj, void *event_info)
 	elm_win_lower(ad->win);
 }
 
-
 static void
 _state_changed_cb(recorder_state_e previous, recorder_state_e current, bool by_policy, void *user_data)
 {
@@ -95,9 +94,10 @@ create_base_gui(appdata_s *ad)
 static Eina_Bool
 _timer2_cb(appdata_s *ad)
 {
+	dlog_print(DLOG_INFO, LOG_TAG, "CALLBACK TIMEOUT !");
 	elm_object_text_set(ad->label, "<align=center>WILL END</align>");
 
-  recorder_state_e state;
+	recorder_state_e state;
 	int error_code = recorder_get_state(ad->g_recorder, &state);
 
 
@@ -114,6 +114,11 @@ _timer2_cb(appdata_s *ad)
 		} else {
 			elm_object_text_set(ad->label, "<align=center>END OK</align>");
 		}
+
+		error_code = recorder_unset_recording_limit_reached_cb(ad->g_recorder);
+	    error_code = recorder_unprepare(ad->g_recorder);
+	    error_code = recorder_unset_state_changed_cb(ad->g_recorder);
+	    error_code = recorder_destroy(ad->g_recorder);
 	}
 
 	timer2 = NULL;
@@ -137,15 +142,26 @@ _go_listen(appdata_s *ad) {
 	size_t size;
 
 	/* Set the audio encoder */
-	error_code = recorder_set_audio_encoder(ad->g_recorder, RECORDER_AUDIO_CODEC_AAC);
-	error_code = recorder_set_file_format(ad->g_recorder, RECORDER_FILE_FORMAT_3GP);
+	error_code = recorder_set_audio_encoder(ad->g_recorder, RECORDER_AUDIO_CODEC_PCM);
+	error_code = recorder_set_file_format(ad->g_recorder, RECORDER_FILE_FORMAT_WAV);
 
 	/* Create the file name */
+	 /*" /opt/usr/home/owner/media/Sounds/"*/
+
 	if (localtime_r(&rawtime, &localtime) != NULL) {
+		/*
 		size = snprintf(filename, sizeof(filename), "%s%s_%04i_%02i_%02i_%02i_%02i_%02i.3gp",
 						app_get_data_path(), FILENAME_PREFIX,
 						localtime.tm_year + 1900, localtime.tm_mon + 1, localtime.tm_mday,
 						localtime.tm_hour, localtime.tm_min, localtime.tm_sec);
+		*/
+
+		char *path;
+		storage_get_directory(STORAGE_TYPE_INTERNAL, STORAGE_DIRECTORY_SOUNDS, &path);
+
+
+
+		size = snprintf(filename, sizeof(filename), "%s%s", path, "/voice.wav");
 	} else {
 		/* Error handling */
 	}
@@ -158,16 +174,19 @@ _go_listen(appdata_s *ad) {
 	error_code = recorder_set_filename(ad->g_recorder,  filename);
 
 	/* Set the maximum file size to 1024 (kB) */
-	error_code = recorder_attr_set_size_limit(ad->g_recorder, 1024);
+	//error_code = recorder_attr_set_size_limit(ad->g_recorder, 2048);
+	error_code = recorder_attr_set_time_limit(ad->g_recorder, RECORD_LIMIT * 2);
 
 	/* Set the audio encoder bitrate */
-	error_code = recorder_attr_set_audio_encoder_bitrate(ad->g_recorder, 28800);
+	error_code = recorder_attr_set_audio_encoder_bitrate(ad->g_recorder, 16000);
+
+	error_code = recorder_attr_set_audio_channel(ad->g_recorder, 1);
 
 	/* Set the audio device to microphone */
 	error_code = recorder_attr_set_audio_device(ad->g_recorder, RECORDER_AUDIO_DEVICE_MIC);
 
 	/* Set the audio sample rate */
-	error_code = recorder_attr_set_audio_samplerate(ad->g_recorder, 44100);
+	error_code = recorder_attr_set_audio_samplerate(ad->g_recorder, 16000);
 
 
 	error_code = recorder_prepare(ad->g_recorder);
@@ -177,10 +196,29 @@ _go_listen(appdata_s *ad) {
 	elm_object_text_set(ad->label, "<align=center>START</align>");
 
 	recorder_state_e state;
-	int aa = recorder_get_state(ad->g_recorder, &state);
+	recorder_get_state(ad->g_recorder, &state);
 	dlog_print(DLOG_INFO, LOG_TAG, "%d and %d", state, error_code);
 
-	//timer2 = ecore_timer_add(3.0, _timer2_cb, ad);
+	/*
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_NONE                );
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_INVALID_PARAMETER   );
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_INVALID_STATE       );
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_OUT_OF_MEMORY       );
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_DEVICE              );
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_INVALID_OPERATION   );
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_SOUND_POLICY        );
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_SECURITY_RESTRICTED );
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_SOUND_POLICY_BY_CALL);
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_SOUND_POLICY_BY_ALARM);
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_ESD                 );
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_OUT_OF_STORAGE      );
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_PERMISSION_DENIED   );
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_NOT_SUPPORTED       );
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_RESOURCE_CONFLICT   );
+	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_SERVICE_DISCONNECTED);
+	*/
+
+	timer2 = ecore_timer_add(RECORD_LIMIT, _timer2_cb, ad);
 
 	return true;
 }
@@ -215,7 +253,6 @@ app_pause(void *data)
 	/* Take necessary actions when application becomes invisible. */
 	dlog_print(DLOG_INFO, LOG_TAG, "app_pause");
 }
-
 
 static void permission_request_cb(ppm_call_cause_e cause, ppm_request_result_e result, const char *privilege, void *user_data)
 {
@@ -296,6 +333,17 @@ app_terminate(void *data)
 {
 	/* Release all resources. */
 	dlog_print(DLOG_INFO, LOG_TAG, "app_terminate");
+	
+	appdata_s *ad = data;
+	
+	int error_code = recorder_unset_recording_limit_reached_cb(ad->g_recorder);
+    error_code = recorder_unprepare(ad->g_recorder);
+    error_code = recorder_unset_state_changed_cb(ad->g_recorder);
+    error_code = recorder_destroy(ad->g_recorder);
+	
+	if (error_code != RECORDER_ERROR_NONE) {
+		dlog_print(DLOG_ERROR, LOG_TAG, "fail to destroy recorder: error code = %d", error_code);
+	}
 }
 
 static void
@@ -333,7 +381,6 @@ ui_app_low_memory(app_event_info_h event_info, void *user_data)
 {
 	/*APP_EVENT_LOW_MEMORY*/
 }
-
 
 int
 main(int argc, char *argv[])

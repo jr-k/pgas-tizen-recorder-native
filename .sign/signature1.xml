@@ -4,13 +4,13 @@
 <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"></SignatureMethod>
 <Reference URI="author-signature.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
-<DigestValue>Yhw4mDg2iPXv7lxI6iHvLGkIHNABgTe8s6f1en/i2FNaoWipcai8HucaVudai5VYRDB53vRI+86S
-lEP+8F944Q==</DigestValue>
+<DigestValue>ooltS0G/0P9qHuGDG4pOuryl2fqhwXMvxPTc4NUrPImqkU0zRJ0Ezdsdpx7d9ahc70lUIIFT/Bu2
+MwlPFlZKhA==</DigestValue>
 </Reference>
 <Reference URI="bin%2Fpegase">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
-<DigestValue>EMx6+YzCb1o75B4Q++6GA7NNky2Jj4FouwsvMQJOqTC1SSS3pYVdtzyPy+JeumornJaCvEnRktm8
-itR2zuiHAQ==</DigestValue>
+<DigestValue>Dq8lZWTkmgAbMqjZuZOyIMRh4QmM8FOTDXhdYWecSME4qNvlmGokXGO/REt+6NTqD2dFeUbScpSt
+0MeL7zmEGg==</DigestValue>
 </Reference>
 <Reference URI="shared%2Fres%2Fpegase.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
@@ -19,8 +19,8 @@ bNc/wgCuGg==</DigestValue>
 </Reference>
 <Reference URI="tizen-manifest.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
-<DigestValue>ea6ljqA2MDQhPq+hBB8BBCHg0ImHsOqnWWH9cpD5IRP+TGa1zxXz8pJMDd6NiACJ/H4Un5s7kjxx
-8gtLTHkzuQ==</DigestValue>
+<DigestValue>kfxUrMluE4xhpwWXx7xlSd8HlKGJHAG3JwriPZuV/FxL78Nl9b8W5e9XNaH4Md5IVpAtjtE+eXlW
++gASSgYPAw==</DigestValue>
 </Reference>
 <Reference URI="#prop">
 <Transforms>
@@ -32,11 +32,11 @@ GyvKX9Snig==</DigestValue>
 </Reference>
 </SignedInfo>
 <SignatureValue>
-EDDwAm1j1USS+kY8HvDRTh0DrttzIkvZctJXEaRIirKKejemNrFGN0/65YE/nrfs5xIlEshETC5Y
-tbziaxzCtM5Phf/3xDHSJCZ78UTzmY61Lm96X2vpN1DUOThhx9z2App5FLwAQ/GJmpnuyUkpnI5E
-xvY09IuBvUwh08errY9gRVD9IGHa9CDG4Mb80bFsvzuy1lo7BVaSFU7XKqEqiv/mdvOkpMdH1/Oc
-4YI3Aws6QwZM1Jh308ZLIXxQoERsXhl1VAUEszt/CvVMZe8OkrBJbUbP4S/OuJMLDcy2pzg/noSu
-rVZxJg4QkEAPrQEytrHvT7F0QHcjGXEcmmjQ1Q==
+AxaNipO909ufiRLAxEpDpGnE03cDR9p33rtizVmjgRzl3Ug5jr0uaGVdMBfRT713HXYLd4tg+R5p
+bCSjnP4DzmscmjfH5kd5uFtYxB5Q+cowi2CIoBYymkCZttJd+S0gYHeiDKOad/O6a3+zLPb51++p
+vlUfiaoFv4hlYYvzdIsxuGPTp3PHf6S+lWYlCifNmNv6igP0C6am+L75ITcB4ZI229bLe+XzI2j3
+/Eb3ouBApnD71K8fr36wo46bCxitjf2vQ56JstP9ph8EcJ6XyhgGryIxOAF3AaNY9aQLRY7p2pPW
+C43oGG1yAq+YdoPzMCPIH6qMGfDSMGgQ1yYftw==
 </SignatureValue>
 <KeyInfo>
 <X509Data>

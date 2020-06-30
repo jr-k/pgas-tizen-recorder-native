@@ -2,6 +2,7 @@
 #define __pegase_H__
 
 #include <app.h>
+#include <storage.h>
 #include <Elementary.h>
 #include <system_settings.h>
 #include <efl_extension.h>
@@ -25,6 +26,7 @@
 
 Ecore_Timer *timer2;
 
+#define RECORD_LIMIT 4.0
 #define NUMBER_OF_PRIVILEGES 3
 bool permission_granted = false;
 int user_clicked = 0;
