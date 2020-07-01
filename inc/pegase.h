@@ -13,12 +13,11 @@
 #include <privacy_privilege_manager.h>
 #include <pthread.h>
 #include <glib.h>
-#include <player.h>
 #include <wav_player.h>
 
 
 #include "psound.h"
-#include "psap.h"
+//#include "psap.h"
 #include "pft.h"
 
 #define FILENAME_PREFIX "AUDIO"
