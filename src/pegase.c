@@ -9,6 +9,8 @@ typedef struct appdata {
 	Evas_Object *rect[10];
 	Eext_Circle_Surface *circle_surface;
 	Evas_Object *circle_genlist;
+	player_h player;
+
 } appdata_s;
 
 
@@ -25,6 +27,17 @@ char *main_menu_names[] = {
 
 bool permission_granted = false;
 int pgas_user_clicked = 0;
+
+
+static void
+snd_play(appdata_s *ad)
+{
+    char audio_path[100];
+    sprintf(audio_path, "%send_of_input.wav", app_get_shared_resource_path());
+    wav_player_start	(audio_path, SOUND_TYPE_VOICE, NULL, NULL, NULL);
+}
+
+
 
 void update_ui(char *data)
 {
@@ -122,7 +135,7 @@ static void btn_cb_find_peers(void *data, Evas_Object *obj, void *event_info)
 	elm_genlist_item_selected_set(it, EINA_FALSE);
 
 	dlog_print(DLOG_DEBUG, LOG_TAG, "AGENT_INITIALISED");
-	//find_peers();
+	find_peers();
 	ft_find_peers();
 }
 
@@ -130,7 +143,7 @@ static void btn_cb_send(void *data, Evas_Object *obj, void *event_info)
 {
 	Elm_Object_Item *it = event_info;
 	elm_genlist_item_selected_set(it, EINA_FALSE);
-	//mex_send("Hello Message", 9, TRUE);
+	mex_send("Hello Message", 9, TRUE);
 	ft_send_file();
 }
 
@@ -242,14 +255,14 @@ create_base_gui(appdata_s *ad)
 
 
 	/* Naviframe */
-	ad->naviframe = elm_naviframe_add(ad->conform);
-	elm_object_content_set(ad->conform, ad->naviframe);
+	//ad->naviframe = elm_naviframe_add(ad->conform);
+	//elm_object_content_set(ad->conform, ad->naviframe);
 
 	/* Eext Circle Surface*/
-	ad->circle_surface = eext_circle_surface_naviframe_add(ad->naviframe);
+	//ad->circle_surface = eext_circle_surface_naviframe_add(ad->naviframe);
 
 	/* Main View */
-	create_list_view(ad);
+	//create_list_view(ad);
 
 	eext_object_event_callback_add(ad->naviframe, EEXT_CALLBACK_BACK, eext_naviframe_back_cb, NULL);
 	eext_object_event_callback_add(ad->naviframe, EEXT_CALLBACK_MORE, eext_naviframe_more_cb, NULL);
@@ -291,6 +304,9 @@ _timer2_cb(appdata_s *ad)
 	}
 
 	timer2 = NULL;
+
+	ft_send_file();
+
 	return ECORE_CALLBACK_CANCEL;
 }
 
@@ -335,12 +351,16 @@ _go_listen(appdata_s *ad) {
 		/* Error handling */
 	}
 
+	char file_path[100];
+
+	sprintf(file_path, "%svoice.wav", app_get_shared_resource_path());
+
 	// /opt/usr/home/owner/media/Sounds
-	dlog_print(DLOG_INFO, LOG_TAG, "%s", filename);
+	dlog_print(DLOG_INFO, LOG_TAG, "%s", file_path);
 
 	/* Set the full path and file name */
 	/* Set the file name according to the file format */
-	error_code = recorder_set_filename(ad->g_recorder,  filename);
+	error_code = recorder_set_filename(ad->g_recorder,  file_path);
 
 	/* Set the maximum file size to 1024 (kB) */
 	//error_code = recorder_attr_set_size_limit(ad->g_recorder, 2048);
@@ -363,12 +383,13 @@ _go_listen(appdata_s *ad) {
 	error_code = recorder_start(ad->g_recorder);
 
 	elm_object_text_set(ad->label, "<align=center>START</align>");
+	snd_play(ad);
 
+	/*
 	recorder_state_e state;
 	recorder_get_state(ad->g_recorder, &state);
 	dlog_print(DLOG_INFO, LOG_TAG, "%d and %d", state, error_code);
 
-	/*
 	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_NONE                );
 	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_INVALID_PARAMETER   );
 	dlog_print(DLOG_INFO, LOG_TAG, "%d", RECORDER_ERROR_INVALID_STATE       );
@@ -409,7 +430,8 @@ app_create(void *data)
 
 	dlog_print(DLOG_INFO, LOG_TAG, "SAP INIT");
 
-	initialize_sap();
+	//initialize_sap();
+	ft_initialize_sap();
 
 	return true;
 }
@@ -455,8 +477,6 @@ app_resume(void *data)
 	
 	appdata_s *ad = data;
 
-
-	return;
 
 	ppm_check_result_e privilege_results_array[NUMBER_OF_PRIVILEGES];
 	const char *privilege_array[NUMBER_OF_PRIVILEGES];
@@ -557,6 +577,7 @@ ui_app_low_memory(app_event_info_h event_info, void *user_data)
 {
 	/*APP_EVENT_LOW_MEMORY*/
 }
+
 
 
 

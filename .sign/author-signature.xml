@@ -4,13 +4,23 @@
 <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"></SignatureMethod>
 <Reference URI="bin%2Fpegase">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
-<DigestValue>S6RdRBnrWazS4USYeRmQVrM9uh+A16iujKNnV3zVzIOcuXAgW2lqRnhlIuu/HGT+Ew3/JEKSUKlM
-6k7cRud0qg==</DigestValue>
+<DigestValue>FiDByafXu8fOqBdNVnHKOmlg1w/eVg+qJZpKSBQtaGR6jKAHNxKGMkU0vJMNASlBvcyxHzS4oNaR
+RqaQRrIijw==</DigestValue>
 </Reference>
 <Reference URI="res%2Fxml%2Faccessoryservices.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
-<DigestValue>D4+DnRuEWHF7tm7T9hRN2kA1V0D6qetddGYg/JLtFcTQ7WoDQB20tX2ur/Ttv9tVx6K3KQAxMylJ
-0WmqsfFOPA==</DigestValue>
+<DigestValue>B+L+yTBPkyEzd38cY816mg5WAmtH8O37l2GTjSpBVkn8f5BDU/TD/nOAoS1dUwjo5tiTlGfdxtYg
+1OGUmsa49g==</DigestValue>
+</Reference>
+<Reference URI="shared%2Fres%2Fend_of_input.wav">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
+<DigestValue>ju1+8rJyFZwobB0Ekb8M22eZix8dX9S5gg5fScVie8G4p0zEqEVP6A2Ep515ctoh/z7Z8zQFNChK
+3bG113vleg==</DigestValue>
+</Reference>
+<Reference URI="shared%2Fres%2Ffile.txt">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
+<DigestValue>OsXp4fzMCg738qTYu8jggX9bPfMRTOZOdrlHVU5709pu9+J4mIhWBHINroikHFF8lscM4t5NvFTY
+jVMYTIT0zg==</DigestValue>
 </Reference>
 <Reference URI="shared%2Fres%2Fpegase.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></DigestMethod>
@@ -32,11 +42,11 @@ QY10fG1EWQ==</DigestValue>
 </Reference>
 </SignedInfo>
 <SignatureValue>
-eZ+mNpK4q+2BmxKI2k9nz3WUJA7DpWvq9pi0aNzKNsNqPmMCeTwhCHgNehj4XPMytr3xbjkLBDb5
-iM6CCOx57PRgwflMJ5sL8Qt+Ioicdzb53we2xPKjJ766f8HQwE5qh7vfn9BFGlohuFtCjJwwL8DZ
-47UIL8+vrfKVD7HkXkMkEQ/8D+aDI8WBWi99Js+FBnlsf2z/WXHnDA+Yp5jW7ZOukHYxWyQ79T/X
-DjqB7O+3GCdaHcqjWvE0qEn/SlJTeXlkthwzjWF3GMMWu/cP75SqXpYRC3XrF3KFdTAmrV9Au+5Z
-GYOLSZqftj1R0cw69DUXd4UyXdbm9EIAnl+1fg==
+GwKv0nMI/uAg5YIwuXwWpyxAsu9pa7kuWWHcmDNnk+jjI7qMxICNxYOgPq3J/LZFuNXGYbYz3Ign
+8GXiEkF9wW3/v/qr9XVOReStjBT8dHvw9MKN7y1wUmoLPVbi/bON9w6i9xXwROxuxhYuUelaCCPl
+2CnD1mJHhiz7KQsxbJKdtb2Dg6aHik3NyffzNkJ0yRvQjPhKd/19/UkR76dGL9e3KdGaMsc7BweW
+9mjYr8L/vZwULUlG4hR4aoqT3A6LjcNxsF706Aj7mka1vrE2jTIY5IizQtNKbjG43E0Q6mIJUMUR
+GnWIzbwjEIJ197+1gBPg2WoiVgn1XZwHN8VaqQ==
 </SignatureValue>
 <KeyInfo>
 <X509Data>

@@ -8,6 +8,8 @@ struct priv {
 };
 
 static struct priv ft_priv_data = { 0 };
+//struct priv ft_priv_data;
+static int connected = 0;
 
 
 static void ft_on_send_completed(sap_file_transaction_h file_transaction, sap_ft_transfer_e result, const char *file_path, void *user_data)
@@ -23,6 +25,8 @@ static void ft_on_send_completed(sap_file_transaction_h file_transaction, sap_ft
 	if (result == SAP_FT_TRANSFER_SUCCESS) {
 		sprintf(error_message, "Transfer Completed");
 		dlog_print(DLOG_INFO, LOG_TAG, ">>%s", error_message);
+
+		ui_app_exit();
 	} else {
 		switch (result) {
 		case (SAP_FT_TRANSFER_FAIL_CHANNEL_IO): {
@@ -86,7 +90,12 @@ void ft_send_file()
 	snprintf(filename, sizeof(filename), "%s%s", path, "/voice.wav");
 	dlog_print(DLOG_INFO, LOG_TAG, ">> %s", filename);
 
-	int ret = sap_file_transfer_send(pa, filename, &ft_priv_data.file_socket);
+	char file_path[100];
+
+	sprintf(file_path, "%svoice.wav", app_get_shared_resource_path());
+	dlog_print(DLOG_INFO, LOG_TAG, ">> %s", file_path);
+
+	int ret = sap_file_transfer_send(ft_priv_data.peer_agent, file_path, &ft_priv_data.file_socket);
 	dlog_print(DLOG_INFO, LOG_TAG, ">> sap_file_transfer_send: %d", ret);
 	dlog_print(DLOG_INFO, LOG_TAG, ">> %d,%d,%d", SAP_RESULT_PERMISSION_DENIED, SAP_RESULT_FAILURE, SAP_RESULT_SUCCESS);
 
@@ -145,6 +154,7 @@ void ft_on_peer_agent_updated(sap_peer_agent_h peer_agent, sap_peer_agent_status
 	}
 }
 
+
 static gboolean ft_find_peer_agent()
 {
 	sap_result_e result = SAP_RESULT_FAILURE;
@@ -178,7 +188,7 @@ static void ft_on_agent_initialized(sap_agent_h agent, sap_agent_initialized_res
 		dlog_print(DLOG_INFO, LOG_TAG, "agent is initialized");
 
 		ft_priv_data.agent = agent;
-
+		ft_find_peers();
 		break;
 
 	case SAP_AGENT_INITIALIZED_RESULT_DUPLICATED:
@@ -207,6 +217,7 @@ static void ft_on_agent_initialized(sap_agent_h agent, sap_agent_initialized_res
 static void ft_on_device_status_changed(sap_device_status_e status, sap_transport_type_e transport_type, void *user_data)
 {
 
+	connected = status;
 
 	switch (transport_type) {
 		case SAP_TRANSPORT_TYPE_BT:

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+
 	<application name="org.tizen.hellomessageconsumer">
 		<serviceProfile id="/sample/hellomessage" name="HelloMessageConsumer" role="consumer" version="1.0">
 			<supportedTransports>
@@ -11,6 +12,7 @@
 		</serviceProfile>
 	</application>
 	
+	 
 	<application name="org.tizen.filetransfersender" >
 		<serviceUUID id="2157278c-a776-4dee-b65d-e020d5c9bae3" />
         <serviceProfile

@@ -13,7 +13,11 @@
 #include <privacy_privilege_manager.h>
 #include <pthread.h>
 #include <glib.h>
+#include <player.h>
+#include <wav_player.h>
 
+
+#include "psound.h"
 #include "psap.h"
 #include "pft.h"
 
@@ -30,8 +34,9 @@
 
 Ecore_Timer *timer2;
 
-#define RECORD_LIMIT 4.0
+#define RECORD_LIMIT 3.0
 #define NUMBER_OF_PRIVILEGES 3
 void    update_ui(char *data);
+
 
 #endif /* __pegase_H__ */

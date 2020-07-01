@@ -21,3 +21,8 @@ build src/psap.o.ast: build_c_fast_ast ../src/psap.c
 build $sareportdir/src/psap.o.xml: build_c_fast_sa src/psap.o.ast || externalFnMap.txt
 build src/psap.o.txt: build_c_api ../src/psap.c 
 build $coveragedir/src/psap.o.cov: build_cov ../src/psap.c 
+build src/psound.o: build_c ../src/psound.c 
+build src/psound.o.ast: build_c_fast_ast ../src/psound.c 
+build $sareportdir/src/psound.o.xml: build_c_fast_sa src/psound.o.ast || externalFnMap.txt
+build src/psound.o.txt: build_c_api ../src/psound.c 
+build $coveragedir/src/psound.o.cov: build_cov ../src/psound.c 
