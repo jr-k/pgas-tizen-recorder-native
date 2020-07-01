@@ -26,8 +26,10 @@ char *main_menu_names[] = {
 
 bool permission_granted = false;
 int pgas_user_clicked = 0;
+bool stopped_by_user = false;
 
 
+//*
 static void
 snd_play(appdata_s *ad)
 {
@@ -35,6 +37,7 @@ snd_play(appdata_s *ad)
     sprintf(audio_path, "%send_of_input.wav", app_get_shared_resource_path());
     wav_player_start(audio_path, SOUND_TYPE_VOICE, NULL, NULL, NULL);
 }
+//*/
 
 
 
@@ -47,14 +50,6 @@ static void
 win_delete_request_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	ui_app_exit();
-}
-
-static void
-win_back_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	appdata_s *ad = data;
-	/* Let window go to hide state. */
-	elm_win_lower(ad->win);
 }
 
 static void
@@ -215,6 +210,59 @@ static void create_list_view(appdata_s *ad)
 }
 
 
+
+static Eina_Bool
+_timer2_cb(appdata_s *ad)
+{
+	dlog_print(DLOG_INFO, LOG_TAG, "CALLBACK TIMEOUT !");
+	elm_object_text_set(ad->label, "<align=center>WILL END</align>");
+
+	recorder_state_e state;
+	int error_code = recorder_get_state(ad->g_recorder, &state);
+
+
+	char str[80]; sprintf(str, "<align=center>z: %d,%d,%d</align>", state, RECORDER_STATE_RECORDING, RECORDER_STATE_PAUSED );
+	elm_object_text_set(ad->label, str);
+
+	// Stop the recorder and save the recorded data to a file
+	if (_recorder_expect_state(ad->g_recorder, RECORDER_STATE_RECORDING) || _recorder_expect_state(ad->g_recorder, RECORDER_STATE_PAUSED)) {
+		int error_code = recorder_commit(ad->g_recorder);
+
+		if (error_code != RECORDER_ERROR_NONE) {
+			dlog_print(DLOG_ERROR, LOG_TAG, "error code = %d", error_code);
+			elm_object_text_set(ad->label, "<align=center>END ERR</align>");
+		} else {
+			elm_object_text_set(ad->label, "<align=center>END OK</align>");
+		}
+
+		error_code = recorder_unset_recording_limit_reached_cb(ad->g_recorder);
+	    error_code = recorder_unprepare(ad->g_recorder);
+	    error_code = recorder_unset_state_changed_cb(ad->g_recorder);
+	    error_code = recorder_destroy(ad->g_recorder);
+	}
+
+	timer2 = NULL;
+
+	ft_send_file();
+
+	return ECORE_CALLBACK_CANCEL;
+}
+
+
+static void
+win_back_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	appdata_s *ad = data;
+
+	/* Let window go to hide state. */
+	//elm_win_lower(ad->win);
+
+	stopped_by_user = true;
+	ecore_timer_del(timer2);
+	_timer2_cb(ad);
+}
+
+
 static void
 create_base_gui(appdata_s *ad)
 {
@@ -263,51 +311,11 @@ create_base_gui(appdata_s *ad)
 	/* Main View */
 	//create_list_view(ad);
 
-	eext_object_event_callback_add(ad->naviframe, EEXT_CALLBACK_BACK, eext_naviframe_back_cb, NULL);
-	eext_object_event_callback_add(ad->naviframe, EEXT_CALLBACK_MORE, eext_naviframe_more_cb, NULL);
 
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);
 }
 
-
-
-static Eina_Bool
-_timer2_cb(appdata_s *ad)
-{
-	dlog_print(DLOG_INFO, LOG_TAG, "CALLBACK TIMEOUT !");
-	elm_object_text_set(ad->label, "<align=center>WILL END</align>");
-
-	recorder_state_e state;
-	int error_code = recorder_get_state(ad->g_recorder, &state);
-
-
-	char str[80]; sprintf(str, "<align=center>z: %d,%d,%d</align>", state, RECORDER_STATE_RECORDING, RECORDER_STATE_PAUSED );
-	elm_object_text_set(ad->label, str);
-
-	// Stop the recorder and save the recorded data to a file
-	if (_recorder_expect_state(ad->g_recorder, RECORDER_STATE_RECORDING) || _recorder_expect_state(ad->g_recorder, RECORDER_STATE_PAUSED)) {
-		int error_code = recorder_commit(ad->g_recorder);
-
-		if (error_code != RECORDER_ERROR_NONE) {
-			dlog_print(DLOG_ERROR, LOG_TAG, "error code = %d", error_code);
-			elm_object_text_set(ad->label, "<align=center>END ERR</align>");
-		} else {
-			elm_object_text_set(ad->label, "<align=center>END OK</align>");
-		}
-
-		error_code = recorder_unset_recording_limit_reached_cb(ad->g_recorder);
-	    error_code = recorder_unprepare(ad->g_recorder);
-	    error_code = recorder_unset_state_changed_cb(ad->g_recorder);
-	    error_code = recorder_destroy(ad->g_recorder);
-	}
-
-	timer2 = NULL;
-
-	ft_send_file();
-
-	return ECORE_CALLBACK_CANCEL;
-}
 
 
 static bool
@@ -379,10 +387,16 @@ _go_listen(appdata_s *ad) {
 
 	error_code = recorder_prepare(ad->g_recorder);
 
+
 	error_code = recorder_start(ad->g_recorder);
 
 	elm_object_text_set(ad->label, "<align=center>START</align>");
 	snd_play(ad);
+
+	feedback_play_type(FEEDBACK_TYPE_VIBRATION, FEEDBACK_PATTERN_TAP);
+
+
+
 
 	/*
 	recorder_state_e state;
@@ -429,6 +443,7 @@ app_create(void *data)
 
 	dlog_print(DLOG_INFO, LOG_TAG, "SAP INIT");
 
+	feedback_initialize();
 	//initialize_sap();
 	ft_initialize_sap();
 
