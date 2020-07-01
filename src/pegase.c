@@ -34,7 +34,7 @@ snd_play(appdata_s *ad)
 {
     char audio_path[100];
     sprintf(audio_path, "%send_of_input.wav", app_get_shared_resource_path());
-    wav_player_start	(audio_path, SOUND_TYPE_VOICE, NULL, NULL, NULL);
+    wav_player_start(audio_path, SOUND_TYPE_VOICE, NULL, NULL, NULL);
 }
 
 
